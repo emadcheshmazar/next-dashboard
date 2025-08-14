@@ -1,10 +1,9 @@
 "use client";
 
-import React from "react";
+import UsersList from "./components/UsersList";
 import { Container, Typography, Box } from "@mui/material";
-import UsersList from "@/app/shared/modules/Users/components/UsersList";
 
-const UsersPage: React.FC = () => {
+const UsersModule: React.FC = () => {
   return (
     <Container maxWidth="lg">
       <Box sx={{ py: 4 }}>
@@ -17,4 +16,4 @@ const UsersPage: React.FC = () => {
   );
 };
 
-export default UsersPage;
+export default UsersModule;

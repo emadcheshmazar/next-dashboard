@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import ReduxProvider from "./shared/redux/provider";
 import ThemeProvider from "@/theme/ThemeProvider";
+import QueryProvider from "./shared/providers/QueryProvider";
 import Toast from "./shared/components/composite/Toast";
 
 export const metadata: Metadata = {
@@ -23,12 +24,12 @@ export default function RootLayout({
       </head>
       <body>
         <ReduxProvider>
-          {/* <QueryProvider> */}
-          <ThemeProvider>
-            {children}
-            <Toast />
-          </ThemeProvider>
-          {/* </QueryProvider> */}
+          <QueryProvider>
+            <ThemeProvider>
+              {children}
+              <Toast />
+            </ThemeProvider>
+          </QueryProvider>
         </ReduxProvider>
       </body>
     </html>
