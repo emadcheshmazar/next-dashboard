@@ -81,26 +81,10 @@ const useGetUsersApi = (args?: {
     setLimit(args?.initialLimit ?? 6);
   };
 
-  const getUserById = async (id: number | string) => {
-    const url = `${apiAddress.users}/${id}`;
-    return await fetch(url);
-  };
-
-  const searchUsers = async (query: string) => {
-    const url = `${apiAddress.users}?q=${encodeURIComponent(query)}`;
-    return await fetch(url);
-  };
-
   return {
-    // API functions
-    getUserById,
-    searchUsers,
-
     currentPageUsers: data,
     error,
     isLoading,
-
-    // Pagination
     pagination: { page: currentPage, limit },
     paginationInfo,
     goToPage,
@@ -109,7 +93,6 @@ const useGetUsersApi = (args?: {
     changeLimit,
     resetPagination,
 
-    // Utilities
     refetch,
   };
 };

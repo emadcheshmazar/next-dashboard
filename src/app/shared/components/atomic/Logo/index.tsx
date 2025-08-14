@@ -28,10 +28,10 @@ export default function Logo({
       el.classList.add("shine-anim");
     }
 
-    if (pathname === ROUTES.DASHBOARD.ROOT) {
+    if (pathname === ROUTES.DASHBOARD.USERS.ROOT) {
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      router.push(ROUTES.DASHBOARD.ROOT);
+      router.push(ROUTES.DASHBOARD.USERS.ROOT);
     }
   };
 

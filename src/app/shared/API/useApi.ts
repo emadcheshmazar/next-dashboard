@@ -45,7 +45,11 @@ export function useApi<T = unknown, P = unknown>(
 ) {
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  useEffect(() => () => abortControllerRef.current?.abort(), []);
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, []);
 
   const isAbortError = (err: unknown) => {
     const anyErr = err as Error & { name?: string; code?: string };
@@ -53,7 +57,7 @@ export function useApi<T = unknown, P = unknown>(
   };
 
   const shouldRetry = (failureCount: number, error: unknown) => {
-    if (isAbortError(error)) return false; // مهم: ریترای نکن روی cancel
+    if (isAbortError(error)) return false;
     const apiError = error as Error & { status?: number };
     const status = apiError?.status;
     const max = options?.retryCount ?? config.apiRequestRetryCount;
@@ -68,15 +72,16 @@ export function useApi<T = unknown, P = unknown>(
 
   const fetchApi = useCallback(
     async (url: string, payload?: P): Promise<T> => {
-      if (abortControllerRef.current) {
-        abortControllerRef.current.abort();
+      if (method !== "get") {
+        if (abortControllerRef.current) {
+          abortControllerRef.current.abort();
+        }
+        abortControllerRef.current = new AbortController();
       }
-
-      abortControllerRef.current = new AbortController();
 
       const fetchOptions: RequestInit = {
         method: method.toUpperCase(),
-        signal: abortControllerRef.current.signal,
+        signal: abortControllerRef.current?.signal,
       };
 
       if (method !== "get" && payload !== undefined) {
@@ -108,32 +113,7 @@ export function useApi<T = unknown, P = unknown>(
 
   const query = useQuery<T, Error & { status?: number }>({
     queryKey,
-    queryFn: async () => {
-      const fetchOptions: RequestInit = {
-        method: method.toUpperCase(),
-      };
-
-      const response = await customFetcher(
-        options?.autoUrl ?? "",
-        fetchOptions
-      );
-
-      if (!response.ok) {
-        const error = new Error(
-          `API error with status ${response.status}`
-        ) as Error & { status: number };
-        error.status = response.status;
-        throw error;
-      }
-
-      const text = await response.text();
-      if (!text) return undefined as T;
-      try {
-        return JSON.parse(text) as T;
-      } catch {
-        return text as unknown as T;
-      }
-    },
+    queryFn: async () => fetchApi(options?.autoUrl ?? ""),
     retry: shouldRetry,
     retryDelay: options?.retryDelay ?? 1500,
     enabled: method === "get" && (options?.enabled ?? !!options?.autoUrl),
@@ -166,7 +146,7 @@ export function useApi<T = unknown, P = unknown>(
 
   if (method === "get") {
     return {
-      cancel,
+      cancel: () => {},
       fetch: fetchApi,
       ...query,
     };

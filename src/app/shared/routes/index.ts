@@ -5,15 +5,13 @@ const ROUTES = {
   },
 
   DASHBOARD: {
-    ROOT: "/dashboard",
-
     USERS: {
-      ROOT: "/dashboard/users",
-      DETAIL: (id: string) => `/dashboard/users/${id}`, 
+      ROOT: "/users",
+      DETAIL: (id: string) => `/users/${id}`,
     },
 
     LOGS: {
-      ROOT: "/dashboard/logs",
+      ROOT: "/logs",
     },
   },
 } as const;
