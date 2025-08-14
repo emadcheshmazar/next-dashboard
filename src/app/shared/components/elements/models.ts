@@ -11,14 +11,7 @@ export enum ElementTypes {
   DynamicElement,
 }
 
-export interface ValidationRules {
-  required: boolean;
-  requiredMessage?: string;
-  customValidations?: {
-    validate: (val: unknown) => boolean;
-    message: string;
-  }[];
-}
+
 
 export interface DefaultElement {
   formName: string;
@@ -28,7 +21,6 @@ export interface DefaultElement {
   disable?: boolean;
   hidden?: boolean;
   tabIndex?: number;
-  validationRules?: ValidationRules;
   error?: boolean;
   helperText?: string;
   helperText2?: string;
@@ -55,6 +47,7 @@ export interface TextInput extends DefaultElement {
   type: ElementTypes.Text;
   value?: string;
   isPassword?: boolean;
+  isEmail?: boolean;
   isArea?: boolean;
 }
 
@@ -114,21 +107,9 @@ export type GenerateConfig =
   | NumberInput
   | SelectInput
   | CheckBoxInput
-  | ToggleBoxInput;
-
-export type AllElement<T extends ElementTypes> = T extends ElementTypes.Text
-  ? TextInput
-  : T extends ElementTypes.Number
-    ? NumberInput
-    : T extends ElementTypes.Select
-      ? SelectInput
-      : T extends ElementTypes.Checkbox
-        ? CheckBoxInput
-        : T extends ElementTypes.Radiobox
-          ? RadioBoxInput
-          : T extends ElementTypes.ToggleBox
-            ? ToggleBoxInput
-            : DynamicElement;
+  | ToggleBoxInput
+  | RadioBoxInput
+  | DynamicElement;
 
 export interface ElementStore<T extends ElementTypes> {
   [key: string]: AllElement<T>;
@@ -161,3 +142,17 @@ export interface ToggleBoxInputProps {
   config: ToggleBoxInput;
   isPersist?: boolean;
 }
+
+export type AllElement<T extends ElementTypes> = T extends ElementTypes.Text
+  ? TextInput
+  : T extends ElementTypes.Number
+    ? NumberInput
+    : T extends ElementTypes.Select
+      ? SelectInput
+      : T extends ElementTypes.Checkbox
+        ? CheckBoxInput
+        : T extends ElementTypes.Radiobox
+          ? RadioBoxInput
+          : T extends ElementTypes.ToggleBox
+            ? ToggleBoxInput
+            : DynamicElement;

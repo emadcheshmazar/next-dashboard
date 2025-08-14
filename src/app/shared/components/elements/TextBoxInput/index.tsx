@@ -1,25 +1,33 @@
+"use client";
+import React from "react";
 import {
-  TextField,
+  Box,
+  Typography,
   SxProps,
   Theme,
-  Typography,
-  Box,
   InputAdornment,
   IconButton,
+  TextField,
 } from "@mui/material";
 import { textBoxInputStyles } from "./TextBox.styles";
-import { setElementValue } from "@/app/shared/core";
+import {
+  addElementHelperText,
+  removeElementHelperText,
+  setElementError,
+  setElementValue,
+} from "@/app/shared/core";
 import { ElementTypes, TextBoxInputProps } from "../models";
 import useInitElement from "../hooks/useElementState";
-import React from "react";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+
 interface TextBoxInputPropsWithSx extends TextBoxInputProps {
   sx?: SxProps<Theme>;
 }
 
 const TextBoxInput = (props: TextBoxInputPropsWithSx) => {
   const { config, sx, isPersist } = props;
+
   const {
     formName,
     value,
@@ -28,6 +36,7 @@ const TextBoxInput = (props: TextBoxInputPropsWithSx) => {
     name,
     hidden,
     isPassword,
+    isEmail,
     helperText,
     helperText2,
     error,
@@ -36,13 +45,14 @@ const TextBoxInput = (props: TextBoxInputPropsWithSx) => {
     placeholder,
     defaultValue,
   } = useInitElement<ElementTypes.Text>({ config, isPersist });
+
   const styles = {
     ...textBoxInputStyles({
       haveHelper: !!helperText,
       error,
       textAlign: txtAlign,
-      disable: disable,
-      isArea: isArea,
+      disable,
+      isArea,
     }),
     ...sx,
   };
@@ -51,11 +61,31 @@ const TextBoxInput = (props: TextBoxInputPropsWithSx) => {
 
   if (hidden) return null;
 
+  const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const val = ev.target.value;
+    setElementError({ formName, name, error: false });
+    removeElementHelperText({ formName, name });
+
+    if (isEmail) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (val && !emailRegex.test(val)) {
+        setElementError({ formName, name, error: true });
+        addElementHelperText({
+          formName,
+          name,
+          helperText: "فرمت ایمیل معتبر نیست",
+        });
+      }
+    }
+
+    setElementValue({ formName, name, value: val, isPersist });
+  };
+
   return (
     <Box sx={{ width: "100%" }}>
       <Box
         sx={{
-          mb: "8px",
+          mb: 1,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
@@ -64,101 +94,60 @@ const TextBoxInput = (props: TextBoxInputPropsWithSx) => {
         }}
       >
         {caption && (
-          <Typography
-            sx={{
-              p: 0,
-              // m: "0 0 8px",
-              color: "#363636",
-            }}
-            fontSize={14}
-            fontWeight={400}
-          >
+          <Typography fontSize={14} fontWeight={400} color="#363636">
             {caption}
           </Typography>
         )}
         {helperText2 && (
-          <Typography
-            sx={{
-              p: 0,
-              m: 0,
-              color: "#5D5D5D",
-            }}
-            fontSize={10}
-            fontWeight={400}
-          >
+          <Typography fontSize={10} fontWeight={400} color="#5D5D5D">
             {helperText2}
           </Typography>
         )}
       </Box>
 
       <TextField
-        onChange={(ev) => {
-          setElementValue({
-            formName,
-            name,
-            value: ev.target.value,
-            isPersist,
-          });
-        }}
-        defaultValue={defaultValue}
-        value={value || ""}
-        disabled={disable}
-        sx={{
-          ...styles,
-          "& .MuiInputBase-input::placeholder": {
-            fontSize: "17px",
-            scale: 12 / 17,
-            mr: "-50px",
-            fontWeight: 500,
-          },
-        }}
         size="small"
-        type={isPassword ? (showPassword ? "text" : "password") : "text"}
+        fullWidth
+        disabled={disable}
+        value={value || ""}
+        defaultValue={defaultValue}
         multiline={isArea}
         minRows={isArea ? 4 : undefined}
         placeholder={placeholder}
-        InputProps={
-          isPassword
-            ? {
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label={
-                        showPassword ? "Hide password" : "Show password"
-                      }
-                      onClick={() => setShowPassword((prev) => !prev)}
-                      edge="end"
-                      size="small"
-                    >
-                      {showPassword ? (
-                        <VisibilityOutlinedIcon />
-                      ) : (
-                        <VisibilityOffOutlinedIcon />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }
-            : undefined
-        }
+        onChange={handleChange}
+        sx={styles}
+        type={isPassword && !showPassword ? "password" : "text"}
+        InputProps={{
+          endAdornment: isPassword ? (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                onClick={() => setShowPassword((prev) => !prev)}
+                edge="end"
+                size="small"
+              >
+                {showPassword ? (
+                  <VisibilityOutlinedIcon />
+                ) : (
+                  <VisibilityOffOutlinedIcon />
+                )}
+              </IconButton>
+            </InputAdornment>
+          ) : undefined,
+        }}
       />
 
-      <Box sx={{ width: "100%" }}>
-        {helperText && (
-          <Typography
-            sx={{
-              p: 0,
-              m: 0,
-            }}
-            fontSize={10}
-            fontWeight={400}
-            textAlign="right"
-            color={error ? "#E05655" : "#5D5D5D"}
-          >
-            {helperText}
-          </Typography>
-        )}
-      </Box>
+      {helperText && (
+        <Typography
+          sx={{ mt: 0.5 }}
+          fontSize={10}
+          fontWeight={400}
+          textAlign="right"
+          color={error ? "#E05655" : "#5D5D5D"}
+        >
+          {helperText}
+        </Typography>
+      )}
     </Box>
   );
 };

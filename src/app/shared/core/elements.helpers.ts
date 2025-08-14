@@ -93,6 +93,18 @@ export const addElementHelperText = (args: {
     isPersist ? changePersistState({ newConfig }) : changeState({ newConfig })
   );
 };
+export const removeElementHelperText = (args: {
+  formName: string;
+  name: string;
+  isPersist?: boolean;
+}) => {
+  const element = findElementByFormName(args);
+  if (!element) return;
+  const newConfig = { ...element, helperText: "" } as typeof element;
+  AppReduxStore.dispatch(
+    args.isPersist ? changePersistState({ newConfig }) : changeState({ newConfig })
+  );
+};
 
 export const removeAllElements = (isPersist: boolean) => {
   AppReduxStore.dispatch(
