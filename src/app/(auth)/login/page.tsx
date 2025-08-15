@@ -8,12 +8,13 @@ import {
 } from "@/app/shared/components/elements/models";
 import { useRouter } from "next/navigation";
 import { collectFormValues } from "@/app/shared/core";
-import { validateLoginForm } from "./utils";
+import { validateLoginForm } from "./utils/validationLogin";
 import FormGenerator from "@/app/shared/components/FormGenerator";
 import { loginUser } from "@/app/shared/services/auth";
 
 const LoginPage = () => {
   const formName = "auth";
+  const isPersist: boolean = true;
   const router = useRouter();
   const [fakeLoading, setFakeLoading] = useState(false);
 
@@ -25,6 +26,7 @@ const LoginPage = () => {
       type: ElementTypes.Text,
       caption: "ایمیل",
       placeholder: "ایمیل خود را وارد کنید",
+      isEmail: true,
     },
     {
       formName,
@@ -40,8 +42,16 @@ const LoginPage = () => {
   const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
-    const loginBody = collectFormValues({ formName }) as Record<string, string>;
-    const isValid = validateLoginForm({ formName, inputs, data: loginBody });
+    const loginBody = collectFormValues({ formName, isPersist }) as Record<
+      string,
+      string
+    >;
+    const isValid = validateLoginForm({
+      formName,
+      inputs,
+      data: loginBody,
+      isPersist,
+    });
     if (!isValid) return;
 
     setFakeLoading(true);
@@ -88,7 +98,7 @@ const LoginPage = () => {
           ورود به حساب کاربری
         </Typography>
 
-        <FormGenerator configs={inputs} />
+        <FormGenerator configs={inputs} isPersist={isPersist} />
 
         <Btn
           label="ورود"

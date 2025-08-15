@@ -11,16 +11,15 @@ type PlainObject = Record<string, unknown>;
 
 export function checkNestedObjectValues(
   obj: PlainObject,
-  options?: CheckObjectOptions
+  ignoreKeys?: string[]
 ): CheckObjectResult {
-  const ignoreKeys = options?.ignoreKeys || [];
   const missingKeys: string[] = [];
 
   function recurse(currObj: PlainObject, parentKey = "") {
     for (const key in currObj) {
       const fullKey = parentKey ? `${parentKey}.${key}` : key;
 
-      if (ignoreKeys.includes(key) || ignoreKeys.includes(fullKey)) continue;
+      if (ignoreKeys?.includes(key) || ignoreKeys?.includes(fullKey)) continue;
 
       const value = currObj[key];
 

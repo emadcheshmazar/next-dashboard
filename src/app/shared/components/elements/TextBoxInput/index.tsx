@@ -63,17 +63,18 @@ const TextBoxInput = (props: TextBoxInputPropsWithSx) => {
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     const val = ev.target.value;
-    setElementError({ formName, name, error: false });
-    removeElementHelperText({ formName, name });
+    setElementError({ formName, name, error: false, isPersist });
+    removeElementHelperText({ formName, name, isPersist });
 
     if (isEmail) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (val && !emailRegex.test(val)) {
-        setElementError({ formName, name, error: true });
+        setElementError({ formName, name, error: true, isPersist });
         addElementHelperText({
           formName,
           name,
           helperText: "فرمت ایمیل معتبر نیست",
+          isPersist,
         });
       }
     }

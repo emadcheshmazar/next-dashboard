@@ -28,7 +28,7 @@ export const registerUser = async (user: User) => {
 
     const updatedUsers = [...users, user];
     storeData({ key: storageKeys.userList, data: updatedUsers });
-    storeData({ key: storageKeys.currentUserData, data: user });
+    // storeData({ key: storageKeys.currentUserData, data: user });
 
     showToast({
       title: "ثبت نام موفق",
@@ -37,7 +37,8 @@ export const registerUser = async (user: User) => {
     });
 
     setTimeout(() => {
-      loginUser(user);
+    //   removeFormElements("auth");
+      window.location.href = ROUTES.AUTH.LOGIN;
     }, 1000);
   });
 };

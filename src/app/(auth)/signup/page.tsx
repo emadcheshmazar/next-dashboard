@@ -14,6 +14,7 @@ import { registerUser } from "@/app/shared/services/auth";
 
 const SignupPage = () => {
   const formName = "auth";
+  const isPersist: boolean = true;
   const router = useRouter();
 
   const inputs: GenerateConfig[] = [
@@ -47,13 +48,17 @@ const SignupPage = () => {
   ];
   const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    const signupBody = collectFormValues({ formName }) as Record<
+    const signupBody = collectFormValues({ formName, isPersist }) as Record<
       string,
       string
     >;
     console.log(signupBody, "signupBody");
-
-    const isValid = validateSignupForm({ formName, inputs, data: signupBody });
+    const isValid = validateSignupForm({
+      formName,
+      inputs,
+      data: signupBody,
+      isPersist,
+    });
     if (!isValid) return;
 
     await registerUser({
@@ -93,7 +98,7 @@ const SignupPage = () => {
           ثبت‌نام
         </Typography>
 
-        <FormGenerator configs={inputs} />
+        <FormGenerator configs={inputs} isPersist={isPersist} />
 
         <Btn
           type="submit"
