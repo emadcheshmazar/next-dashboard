@@ -1,7 +1,3 @@
-interface CheckObjectOptions {
-  ignoreKeys?: string[];
-}
-
 interface CheckObjectResult {
   allHaveValues: boolean;
   missingKeys: string[];
