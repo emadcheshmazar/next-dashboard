@@ -1,18 +1,18 @@
-"use client"
-import { Box, Badge, SxProps } from "@mui/material"
-import React from "react"
-import Image from "next/image"
+"use client";
+import { Box, Badge, SxProps, Typography } from "@mui/material";
+import React from "react";
+import Image from "next/image";
 
 interface MenuItemProps {
-  title: string
-  icon?: React.ReactNode | string
-  isActive?: boolean
-  isSelected?: boolean
-  isSub?: boolean
-  notifCount?: number
-  onClick?: () => void
-  sx?: SxProps
-  isLogout?: boolean
+  title: string;
+  icon?: React.ReactNode | string;
+  isActive?: boolean;
+  isSelected?: boolean;
+  isSub?: boolean;
+  notifCount?: number;
+  onClick?: () => void;
+  sx?: SxProps;
+  isLogout?: boolean;
 }
 
 function MenuItem({
@@ -94,7 +94,7 @@ function MenuItem({
             ml: "20px",
           }}
         >
-          {title}
+          <Typography>{title}</Typography>
         </Box>
         {notifCount !== undefined && (
           <Badge
@@ -113,7 +113,7 @@ function MenuItem({
         )}
       </Box>
     </Box>
-  )
+  );
 }
 
-export default MenuItem
+export default MenuItem;

@@ -7,18 +7,20 @@ import {
   GenerateConfig,
 } from "@/app/shared/components/elements/models";
 import { useRouter } from "next/navigation";
-import { collectFormValues, showToast } from "@/app/shared/core";
+import { collectFormValues } from "@/app/shared/core";
 import FormGenerator from "@/app/shared/components/FormGenerator";
 import { validateSignupForm } from "./utils/validationSignup";
+import { registerUser } from "@/app/shared/services/auth";
 
 const SignupPage = () => {
-  const formName = "signupForm";
+  const formName = "auth";
   const router = useRouter();
 
   const inputs: GenerateConfig[] = [
     {
       formName,
       name: "email",
+      name4Save: "email",
       type: ElementTypes.Text,
       caption: "ایمیل",
       placeholder: "ایمیل خود را وارد کنید",
@@ -27,6 +29,7 @@ const SignupPage = () => {
     {
       formName,
       name: "password",
+      name4Save: "password",
       type: ElementTypes.Text,
       caption: "رمز عبور",
       placeholder: "رمز عبور خود را وارد کنید",
@@ -35,30 +38,28 @@ const SignupPage = () => {
     {
       formName,
       name: "confirmPassword",
+      name4Save: "confirmPassword",
       type: ElementTypes.Text,
       caption: "تایید رمز عبور",
       placeholder: "رمز عبور را دوباره وارد کنید",
       isPassword: true,
     },
   ];
-
-  const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     const signupBody = collectFormValues({ formName }) as Record<
       string,
       string
     >;
+    console.log(signupBody, "signupBody");
 
-    const isValid = validateSignupForm({
-      formName,
-      inputs,
-      data: signupBody,
-    });
-
+    const isValid = validateSignupForm({ formName, inputs, data: signupBody });
     if (!isValid) return;
-    showToast({ title: "ورود موفق", variant: "success" });
 
-    console.log("Signup form submitted", signupBody);
+    await registerUser({
+      email: signupBody.email,
+      password: signupBody.password,
+    });
   };
 
   return (

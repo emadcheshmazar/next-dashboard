@@ -45,7 +45,11 @@ function AccordionMenu({
 
     if (!hasChildren && item.path) {
       return (
-        <Link href={item.path} style={{ textDecoration: "none" }}>
+        <Link
+          href={item.path}
+          style={{ textDecoration: "none" }}
+          key={item.key}
+        >
           <MenuItem
             key={item.key}
             title={item.title}

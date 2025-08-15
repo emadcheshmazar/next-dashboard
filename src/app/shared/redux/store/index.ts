@@ -42,6 +42,6 @@ export type AppDispatch = typeof AppReduxStore.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
-AppReduxStore.subscribe(() => {
-  console.log(AppReduxStore.getState(), "redux store");
-});
+// AppReduxStore.subscribe(() => {
+//   // console.log(AppReduxStore.getState(), "redux store");
+// });

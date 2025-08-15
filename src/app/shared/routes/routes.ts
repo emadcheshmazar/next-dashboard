@@ -19,7 +19,6 @@ export const pagesTree: PageNode[] = [
     key: "DASHBOARD",
     title: "داشبورد",
     children: [
-      { key: "HOME", title: "صفحه اصلی داشبورد", path: "/dashboard" },
       { key: "USERS", title: "کاربران", path: "/dashboard/users" },
       { key: "LOGS", title: "لاگ‌ها", path: "/dashboard/logs" },
     ],
@@ -31,9 +30,8 @@ export const appTree: PageNode[] = [
     key: "DASHBOARD",
     title: "داشبورد",
     children: [
-      { key: "HOME", title: "صفحه اصلی داشبورد", path: "/dashboard" },
-      { key: "USERS", title: "کاربران", path: "/dashboard/users" },
-      { key: "LOGS", title: "لاگ‌ها", path: "/dashboard/logs" },
+      { key: "USERS", title: "کاربران", path: "/users" },
+      { key: "LOGS", title: "لاگ‌ها", path: "/logs" },
     ],
   },
 ];

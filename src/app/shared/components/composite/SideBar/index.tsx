@@ -1,6 +1,6 @@
 "use client";
 import { toggleSidebar } from "@/app/shared/core";
-import { Box, Button, Drawer, useTheme } from "@mui/material";
+import { Box, Button, Drawer, Typography, useTheme } from "@mui/material";
 import React from "react";
 import { useSideBar } from "./hook/useSideBar";
 import IconBtn from "../../atomic/IconBtn";
@@ -10,18 +10,22 @@ import { appTree } from "@/app/shared/routes/routes";
 // import { findPageByPath, findParentKey } from "@/app/shared/routes/utils";
 import { usePathname } from "next/navigation";
 import MenuItem from "./components/MenuItem";
+import { findPageByPath, findParentKey } from "@/app/shared/routes/utils";
+import { getCurrentUser, logoutUser } from "@/app/shared/services/auth";
+import Logo from "../../atomic/Logo";
 // import { logout } from "@/app/shared/Api/tokenManager";
 // import { useAuthUser } from "@/app/shared/hooks/useAuthUser";
 
 function SideBar() {
   const { isSideBarOpen } = useSideBar();
   const pathname = usePathname();
-  // const activePage = findPageByPath(appTree, pathname);
-  // const parentKey = activePage
-  //   ? findParentKey(appTree, activePage.key)
-  //   : undefined;
-  // const { user } = useAuthUser();
-  const theme = useTheme();
+  const activePage = findPageByPath(appTree, pathname);
+  const parentKey = activePage
+    ? findParentKey(appTree, activePage.key)
+    : undefined;
+
+  const user = getCurrentUser();
+  console.log(user, "user");
 
   return (
     <Drawer
@@ -58,10 +62,14 @@ function SideBar() {
           onClick={() => toggleSidebar(false)}
         />
       </Box>
+      <Logo />
+      <Typography sx={{ m: "4px 0 8px" }} color="info">
+        {user?.email}
+      </Typography>
       <AccordionMenu
         data={appTree}
         onItemClick={() => toggleSidebar(false)}
-        // activeKey={parentKey}
+        activeKey={parentKey}
       />
       <Box
         sx={{
@@ -69,7 +77,7 @@ function SideBar() {
           width: "fit-content",
           direction: "rtl",
         }}
-        // onClick={logout}
+        onClick={logoutUser}
         component={Button}
       >
         <MenuItem

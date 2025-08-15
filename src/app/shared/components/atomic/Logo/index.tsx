@@ -1,5 +1,6 @@
 "use client";
 
+import { toggleSidebar } from "@/app/shared/core";
 import ROUTES from "@/app/shared/routes";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,8 +14,8 @@ type LogoProps = {
 
 export default function Logo({
   variant = "default",
-  width = 81,
-  height = 46,
+  width = 32,
+  height = 32,
 }: LogoProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -30,12 +31,15 @@ export default function Logo({
 
     if (pathname === ROUTES.DASHBOARD.USERS.ROOT) {
       window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => {
+        toggleSidebar(false);
+      }, 1000);
     } else {
       router.push(ROUTES.DASHBOARD.USERS.ROOT);
     }
   };
 
-  const src = variant === "white" ? "/main/logoW.png" : "/main/logo.png";
+  const src = variant === "white" ? "/dashboardLogo.png" : "/dashboardLogo.png";
 
   return (
     <div
@@ -50,7 +54,7 @@ export default function Logo({
         height,
       }}
     >
-      <Image src={src} alt="Pelleh Logo" width={width} height={height} />
+      <Image src={src} alt="dashboard Logo" width={width} height={height} />
       <style jsx>{`
         .shine-wrapper::after {
           content: "";

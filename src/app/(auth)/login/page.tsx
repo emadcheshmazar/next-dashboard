@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Btn from "@/app/shared/components/atomic/Btn";
 import {
@@ -7,18 +7,21 @@ import {
   GenerateConfig,
 } from "@/app/shared/components/elements/models";
 import { useRouter } from "next/navigation";
-import { collectFormValues, showToast } from "@/app/shared/core";
+import { collectFormValues } from "@/app/shared/core";
 import { validateLoginForm } from "./utils";
 import FormGenerator from "@/app/shared/components/FormGenerator";
+import { loginUser } from "@/app/shared/services/auth";
 
 const LoginPage = () => {
-  const formName = "loginForm";
+  const formName = "auth";
   const router = useRouter();
+  const [fakeLoading, setFakeLoading] = useState(false);
 
   const inputs: GenerateConfig[] = [
     {
       formName,
       name: "email",
+      name4Save: "email",
       type: ElementTypes.Text,
       caption: "ایمیل",
       placeholder: "ایمیل خود را وارد کنید",
@@ -26,6 +29,7 @@ const LoginPage = () => {
     {
       formName,
       name: "password",
+      name4Save: "password",
       type: ElementTypes.Text,
       caption: "رمز عبور",
       placeholder: "رمز عبور خود را وارد کنید",
@@ -33,12 +37,24 @@ const LoginPage = () => {
     },
   ];
 
-  const handleSubmit = () => {
+  const handleSubmit = async (ev: React.FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
+
     const loginBody = collectFormValues({ formName }) as Record<string, string>;
     const isValid = validateLoginForm({ formName, inputs, data: loginBody });
     if (!isValid) return;
-    showToast({ title: "ورود موفق", variant: "success" });
-    console.log("Login form submitted", loginBody);
+
+    setFakeLoading(true);
+    try {
+      await loginUser({
+        email: loginBody.email,
+        password: loginBody.password,
+      });
+    } catch (err) {
+      console.error("Login failed:", err);
+    } finally {
+      setFakeLoading(false);
+    }
   };
 
   return (
@@ -54,6 +70,8 @@ const LoginPage = () => {
       }}
     >
       <Box
+        component="form"
+        onSubmit={handleSubmit}
         sx={{
           width: "100%",
           maxWidth: 380,
@@ -76,7 +94,8 @@ const LoginPage = () => {
           label="ورود"
           variant="contained"
           color="primary"
-          onClick={handleSubmit}
+          type="submit"
+          loading={fakeLoading}
           sx={{ mt: 2 }}
         />
 
