@@ -56,10 +56,13 @@ const LoginPage = () => {
 
     setFakeLoading(true);
     try {
-      await loginUser({
-        email: loginBody.email,
-        password: loginBody.password,
-      });
+      await loginUser(
+        {
+          email: loginBody.email,
+          password: loginBody.password,
+        },
+        isPersist
+      );
     } catch (err) {
       console.error("Login failed:", err);
     } finally {

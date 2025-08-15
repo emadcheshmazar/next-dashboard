@@ -37,13 +37,12 @@ export const registerUser = async (user: User) => {
     });
 
     setTimeout(() => {
-    //   removeFormElements("auth");
       window.location.href = ROUTES.AUTH.LOGIN;
     }, 1000);
   });
 };
 
-export const loginUser = async (user: User) => {
+export const loginUser = async (user: User, isPersist?: boolean) => {
   showToast({ title: "در حال ورود...", variant: "info", duration: 1000 });
 
   await fakeApiCall(() => {
@@ -71,7 +70,7 @@ export const loginUser = async (user: User) => {
     });
 
     setTimeout(() => {
-      removeFormElements("auth");
+      removeFormElements("auth", isPersist);
       window.location.href = ROUTES.DASHBOARD.USERS.ROOT;
     }, 1000);
   });

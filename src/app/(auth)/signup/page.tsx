@@ -52,7 +52,6 @@ const SignupPage = () => {
       string,
       string
     >;
-    console.log(signupBody, "signupBody");
     const isValid = validateSignupForm({
       formName,
       inputs,
