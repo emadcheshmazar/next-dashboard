@@ -40,6 +40,8 @@ const DataTable: React.FC<DataTableProps> = ({
         label={title}
         disableRowSelectionOnClick
         sx={{
+          width: { xs: "90vw", lg: "100%" },
+          overflowX: "autoo",
           "& .MuiIconButton-root": {
             transform: "scaleX(-1)",
           },
