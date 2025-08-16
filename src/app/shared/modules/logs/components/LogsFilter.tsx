@@ -21,16 +21,15 @@ import SelectBoxInput from "@/app/shared/components/elements/SelectBoxInput";
 import TextBoxInput from "@/app/shared/components/elements/TextBoxInput";
 
 interface LogsFilterProps {
-  formName: string;
   onFilterChange: (filters: LogFilters) => void;
   onClearFilters: () => void;
 }
 
 const LogsFilter: React.FC<LogsFilterProps> = ({
-  formName,
   onFilterChange,
   onClearFilters,
 }) => {
+  const formName = "logsFilterForm";
   const typeValue = useElementValue({
     formName,
     name: "type",
