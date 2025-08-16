@@ -27,11 +27,7 @@ export const addElementOptions = <T extends ElementTypes>(args: {
 
 export const removeElementOptions = <T extends ElementTypes>(args: {
   name: string;
-  optionsToRemove: T extends
-    | ElementTypes.Select
-    | ElementTypes.Radiobox
-    ? itemOption[]
-    : never;
+  optionsToRemove: T extends ElementTypes.Select ? itemOption[] : never;
 }) => {
   const { name, optionsToRemove } = args;
   const state = AppReduxStore.getState().withoutPersist.elements[name];
