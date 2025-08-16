@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Next Dashboard 🚀
 
-## Getting Started
+یک اپلیکیشن Next.js با معماری ماژولار، توسعه‌پذیر و آماده برای اسکیل که شامل قابلیت‌های لاگین، ثبت‌نام، مدیریت کاربران و گزارش‌هاست.
 
-First, run the development server:
+📌 ویژگی‌ها
 
-```bash
+Authentication:
+
+لاگین و ثبت‌نام
+
+ذخیره‌سازی توکن‌ها و دیتا در LocalStorage, SessionStorage و Cookie
+
+استفاده از CryptoJS برای رمزنگاری و افزایش امنیت دیتا
+
+State Management:
+
+مدیریت استیت با Redux Toolkit و redux-persist
+
+هر المنت (input) دارای یک slice اختصاصی است که می‌تواند به صورت Persist یا Non-Persist استفاده شود
+
+فایل Core برای مدیریت مرکزی dispatchها → جلوگیری از پراپس دریلیـنگ و بهینه‌سازی رندرها
+
+API Layer:
+
+لایه API با React Query (TanStack Query) پیاده‌سازی شده
+
+پشتیبانی از:
+
+کشینگ هوشمند
+
+abort خودکار درخواست‌ها
+
+generic types برای هر API instance
+
+decoupled design → تغییر یا جایگزینی سرویس‌ها بدون وابستگی به UI
+
+UI / Design System:
+
+طراحی با Material UI (MUI) و Framer Motion
+
+قابل گسترش برای هر input یا کامپوننت جدید مبتنی بر Design System
+
+ساختار کاملاً decoupled بین UI, Service, API
+
+📊 فیچرهای اصلی اپلیکیشن
+
+لاگین و ثبت‌نام
+
+صفحه کاربران:
+
+لیست کاربران با pagination سمت بک‌اند
+
+کشینگ دیتای کاربران با React Query
+
+صفحه داینامیک برای هر کاربر
+
+صفحه لاگ‌ها:
+
+جدول با pagination
+
+نمایش جزئیات و تعداد هر نوع لاگ
+
+سایدبار و صفحات داینامیک
+
+🛠 تکنولوژی‌ها و کتابخانه‌ها
+
+Framework: Next.js 15 + Turbopack
+
+State Management: Redux Toolkit + Redux Persist
+
+Data Fetching: TanStack Query (React Query)
+
+UI: Material UI, MUI DataGrid, Framer Motion
+
+Security & Storage: CryptoJS, Cookie, LocalStorage, SessionStorage
+
+TypeScript + ESLint + Prettier برای کیفیت کد
+
+⚙️ شروع به کار
+
+# نصب پکیج‌ها
+
+npm install
+
+# اجرای سرور توسعه
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# بیلد برای پروداکشن
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+npm run build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# اجرای اپ در محیط پروداکشن
 
-## Learn More
+npm start
 
-To learn more about Next.js, take a look at the following resources:
+اپلیکیشن روی http://localhost:3000 در دسترس خواهد بود.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+📐 معماری
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+این معماری شاید برای تسک فعلی کمی over-engineered به نظر بیاد،
+اما با نگاه بلندمدت طراحی شده تا:
 
-## Deploy on Vercel
+توسعه‌پذیری بالا داشته باشه
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+برای نیروی جدید readable و قابل درک باشه
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+از prop drilling جلوگیری بشه
+
+پرفرمنس و کنترل رندرها دست دولوپر باشه
+
+نتیجه؟
+یک پروژه کاملاً SOLID، مقیاس‌پذیر و امن ✅
