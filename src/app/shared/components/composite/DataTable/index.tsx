@@ -46,13 +46,20 @@ const DataTable: React.FC<DataTableProps> = ({
           "& .MuiDataGrid-cell": {
             direction: "rtl",
             textAlign: "right",
+            display: "flex",
+            alignItems: "center",
           },
           "& .MuiDataGrid-columnHeader": {
             direction: "rtl",
+            // display: "flex",
+            // alignItems: "center",
           },
           "& .MuiDataGrid-toolbarContainer": {
             direction: "rtl",
             justifyContent: "flex-start",
+          },
+          "& .MuiDataGrid-row": {
+            minHeight: 52,
           },
         }}
       />

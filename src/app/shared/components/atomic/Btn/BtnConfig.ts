@@ -53,6 +53,6 @@ export const getTypographyStyles = (
   variant: "contained" | "outlined" | "text",
 ): SxProps<Theme> => ({
   textDecoration: underline ? "underline" : "none",
-  // pt: icon ? "5px" : "0px",
+  px: icon ? "8px" : "0px",
   fontSize: size === "large" ? "16px" : size === "medium" ? "14px" : "12px",
 })

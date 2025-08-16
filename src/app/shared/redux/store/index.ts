@@ -7,7 +7,7 @@ import sliceRootReducer from "./rootReducer";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["persistElements"],
+  whitelist: ["persistElements", "logsData"],
 };
 
 const persistedReducer = persistReducer(

@@ -1,13 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Typography, Box } from "@mui/material";
 import UsersList from "@/app/shared/modules/Users/components/UsersList";
-import { getLocalData } from "@/app/shared/services/storage";
-import { storageKeys } from "@/app/shared/services/storage/storageKeys";
-import { User } from "@/app/shared/modules/Users/models";
+
+import { logUserPageView } from "@/app/shared/core/logs.helpers";
 
 const UsersPage: React.FC = () => {
+  useEffect(() => {
+    logUserPageView();
+  }, []);
 
   return (
     <Container maxWidth="lg">
@@ -15,7 +17,7 @@ const UsersPage: React.FC = () => {
         <Typography variant="h4" component="h1" gutterBottom>
           لیست کاربران
         </Typography>
-   
+
         <UsersList />
       </Box>
     </Container>

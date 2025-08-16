@@ -1,7 +1,9 @@
 import { removeFormElements, showToast } from "../../core";
+import { logLogin, logLogout } from "../../core/logs.helpers";
 import ROUTES from "../../routes";
 import { clearData, getData, storeData } from "../storage/localStorage";
 import { storageKeys } from "../storage/storageKeys";
+// import { logLoginDirect, logLogoutDirect } from "../../modules/logs/utils/directLogger";
 
 export interface User {
   email: string;
@@ -28,7 +30,6 @@ export const registerUser = async (user: User) => {
 
     const updatedUsers = [...users, user];
     storeData({ key: storageKeys.userList, data: updatedUsers });
-    // storeData({ key: storageKeys.currentUserData, data: user });
 
     showToast({
       title: "ثبت نام موفق",
@@ -63,6 +64,7 @@ export const loginUser = async (user: User, isPersist?: boolean) => {
 
     storeData({ key: storageKeys.currentUserData, data: foundUser });
 
+    logLogin();
     showToast({
       title: "ورود موفق",
       variant: "success",
@@ -81,6 +83,7 @@ export const getCurrentUser = (): User | null => {
 };
 
 export const logoutUser = async () => {
+  logLogout();
   await fakeApiCall(() => {
     clearData({ key: storageKeys.currentUserData });
   });
