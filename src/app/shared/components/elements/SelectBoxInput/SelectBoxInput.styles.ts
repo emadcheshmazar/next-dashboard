@@ -1,15 +1,15 @@
-import { fontScale } from "@/app/shared/utils/fontScale"
-import { SxProps, Theme } from "@mui/material"
+import { fontScale } from "@/app/shared/utils/fontScale";
+import { SxProps, Theme } from "@mui/material";
 
 export const selectBoxStyles: SxProps<Theme> = {
   position: "relative",
   width: "100%",
   height: "42px",
-}
+};
 
 export const autoCompleteStyles = (args?: {
-  error?: boolean
-  haveHelper?: boolean
+  error?: boolean;
+  haveHelper?: boolean;
 }) => {
   return {
     transition: "all 0.2s ease",
@@ -22,7 +22,7 @@ export const autoCompleteStyles = (args?: {
     },
     "& .MuiOutlinedInput-root": { p: "6px 12px !important" },
     "& .MuiAutocomplete-endAdornment": {
-      // display: "none",
+      display: "none",
       position: "absolute",
       left: "6px",
       p: 0,
@@ -45,5 +45,5 @@ export const autoCompleteStyles = (args?: {
       p: 0,
       m: 0,
     },
-  }
-}
+  };
+};

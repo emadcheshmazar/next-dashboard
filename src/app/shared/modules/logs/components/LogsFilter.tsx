@@ -1,52 +1,59 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Grid,
+  Paper,
   Typography,
   IconButton,
+  Grid,
   Tooltip,
 } from "@mui/material";
 import {
   FilterList as FilterIcon,
   Clear as ClearIcon,
 } from "@mui/icons-material";
-import { LogFilters } from "../models";
+import { LogFilters, LogType } from "../models";
+import { ElementTypes } from "@/app/shared/components/elements/models";
+import { removeElementHelperText } from "@/app/shared/core/elements.helpers";
+import { useElementValue } from "@/app/shared/redux/hooks/useElementValue";
+import SelectBoxInput from "@/app/shared/components/elements/SelectBoxInput";
+import TextBoxInput from "@/app/shared/components/elements/TextBoxInput";
 
 interface LogsFilterProps {
+  formName: string;
   onFilterChange: (filters: LogFilters) => void;
   onClearFilters: () => void;
 }
 
 const LogsFilter: React.FC<LogsFilterProps> = ({
+  formName,
   onFilterChange,
   onClearFilters,
 }) => {
-  const [filters, setFilters] = useState<LogFilters>({});
+  const typeValue = useElementValue({
+    formName,
+    name: "type",
+  }) as string;
+  const userEmailValue = useElementValue({
+    formName,
+    name: "userEmail",
+  }) as string;
 
-  const handleFilterChange = (
-    key: keyof LogFilters,
-    value: string | undefined
-  ) => {
-    const newFilters = { ...filters, [key]: value };
-    setFilters(newFilters);
-    onFilterChange(newFilters);
-  };
+  useEffect(() => {
+    const filters: LogFilters = {
+      userEmail: userEmailValue,
+      type: typeValue === "all" ? undefined : (typeValue as LogType),
+    };
+    onFilterChange(filters);
+  }, [typeValue, userEmailValue]);
 
-  const handleClearFilters = () => {
-    setFilters({});
+  const handleClear = () => {
+    ["userEmail", "type", "startDate", "endDate"].forEach((name) =>
+      removeElementHelperText({ formName, name })
+    );
     onClearFilters();
   };
-
-  const hasActiveFilters = Object.values(filters).some(
-    (value) => value !== undefined && value !== ""
-  );
 
   return (
     <Box sx={{ p: 2, mb: 3 }}>
@@ -62,51 +69,49 @@ const LogsFilter: React.FC<LogsFilterProps> = ({
             فیلتر لاگ‌ها
           </Typography>
         </Box>
-
-        <Box display="flex" gap={1}>
-          {hasActiveFilters && (
-            <Tooltip title="پاک کردن فیلترها">
-              <IconButton onClick={handleClearFilters} color="error">
-                <ClearIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-        </Box>
       </Box>
 
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-          <TextField
-            fullWidth
-            label="شناسه کاربر"
-            value={filters.userEmail || ""}
-            onChange={(e) =>
-              handleFilterChange("userEmail", e.target.value || undefined)
-            }
-            size="small"
+          <SelectBoxInput
+            config={{
+              formName,
+              name: "type",
+              caption: "نوع فعالیت",
+              type: ElementTypes.Select,
+              options: [
+                { id: "all", label: "همه", value: "all" },
+                { id: "LOGIN", label: "ورود", value: "LOGIN" },
+                { id: "LOGOUT", label: "خروج", value: "LOGOUT" },
+                {
+                  id: "USERS_VIEW",
+                  label: "مشاهده صفحه کاربران",
+                  value: "USERS_VIEW",
+                },
+                {
+                  id: "USER_DETAIL_VIEW",
+                  label: "مشاهده جزئیات کاربر",
+                  value: "USER_DETAIL_VIEW",
+                },
+                {
+                  id: "LOGS_VIEW",
+                  label: "مشاهده صفحه لاگ‌ها",
+                  value: "LOGS_VIEW",
+                },
+              ],
+            }}
           />
         </Grid>
 
         <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-          <FormControl fullWidth size="small">
-            <InputLabel>نوع فعالیت</InputLabel>
-            <Select
-              value={filters.type || ""}
-              label="نوع فعالیت"
-              onChange={(e) =>
-                handleFilterChange("type", e.target.value || undefined)
-              }
-            >
-              <MenuItem value="">همه</MenuItem>
-              <MenuItem value="LOGIN">ورود</MenuItem>
-              <MenuItem value="LOGOUT">خروج</MenuItem>
-              <MenuItem value="USERS_VIEW">مشاهده صفحه کاربران</MenuItem>
-              <MenuItem value="USER_DETAIL_VIEW">
-                شاهده صفحه جزئیات کاربر
-              </MenuItem>
-              <MenuItem value="LOGS_VIEW">مشاهده صفحه لاگ‌ها</MenuItem>
-            </Select>
-          </FormControl>
+          <TextBoxInput
+            config={{
+              formName,
+              name: "userEmail",
+              type: ElementTypes.Text,
+              caption: "شناسه کاربر",
+            }}
+          />
         </Grid>
       </Grid>
     </Box>

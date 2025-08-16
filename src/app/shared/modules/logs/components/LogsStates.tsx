@@ -10,10 +10,10 @@ import {
   Person,
 } from "@mui/icons-material";
 import LogStateCard from "./LogStateCard";
-import { useLogStates } from "@/app/shared/redux/hooks/useGlobalState";
+import { getLogStates } from "@/app/shared/core/logs.helpers";
 
 const LogsStates = () => {
-  const stats = useLogStates();
+  const stats = getLogStates();
   return (
     <Box mb={3}>
       <Typography variant="h6" mb={2} fontWeight="medium">
